@@ -1,4 +1,4 @@
-# Hôtels accessibles du Québec - carte Kéroul
+# Accès Hôtel
 
 Application web statique qui cartographie l'accessibilité des hôtels du Québec à partir du répertoire certifié [Kéroul](https://www.keroul.qc.ca). Chaque hôtel est positionné sur une carte et coloré selon sa cote d'accessibilité ; le panneau de détail affiche les critères mesurés, regroupés par **chambres** et **commodités**.
 

@@ -28,7 +28,7 @@
   --link:#1f5fa8;
   --link-dk:#184a83;
 
-  /* Accent chaleureux Québec Accessible (hospitalite) : corail chaud, distinct de la triade
+  /* Accent chaleureux Accès Hôtel (hospitalite) : corail chaud, distinct de la triade
      des cotes et des couleurs institutionnelles de Kéroul. Reserve a l'identite. */
   --accent:#e8765a;
   --accent-2:#f4a98f;
@@ -79,7 +79,7 @@ body{
     var(--part) 33.33% 66.66%,
     var(--non) 66.66% 100%);
 }
-/* Wordmark Québec Accessible : petite identite propre, sobre, posee au-dessus du titre */
+/* Wordmark Accès Hôtel : petite identite propre, sobre, posee au-dessus du titre */
 .brand{display:flex;align-items:center;gap:11px;margin:0 0 14px}
 .mark{
   flex:0 0 auto;width:40px;height:40px;display:block;
