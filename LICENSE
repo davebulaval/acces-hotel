@@ -19,16 +19,3 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
-
--------------------------------------------------------------------------------
-
-The MIT license above applies ONLY to the source code of this project
-(index.html, css/, js/app.js, test/, build scripts).
-
-It does NOT apply to the accessibility data shipped in js/data.js. That data is
-the property of Kéroul (https://www.keroul.qc.ca). It is included here only to
-let this unofficial, non-commercial application display Kéroul's information.
-The data is not placed under the MIT license, is not authorized for commercial
-use, and remains subject to Kéroul's own terms.
-
-Leaflet (vendor/) is distributed under its own BSD-2-Clause license.
