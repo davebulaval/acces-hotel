@@ -335,6 +335,79 @@ input[type=search]:focus,select:focus{
   *{transition:none!important}
 }
 
+/* ---------- Outils d'en-tete : langue + voix ---------- */
+.headtools{display:flex;gap:8px;align-items:center;margin-left:auto}
+#langSel{
+  appearance:none;cursor:pointer;
+  background:rgba(255,255,255,.1);color:#fff;
+  border:1px solid rgba(255,255,255,.28);border-radius:8px;
+  font:600 12px var(--sans);padding:5px 26px 5px 9px;
+  background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'><path fill='%23ffffff' d='M1 1l5 5 5-5'/></svg>");
+  background-repeat:no-repeat;background-position:right 8px center;
+}
+#langSel option{color:#18222c}
+.iconbtn{
+  display:inline-flex;align-items:center;justify-content:center;
+  width:30px;height:30px;border-radius:8px;cursor:pointer;
+  background:rgba(255,255,255,.1);color:#fff;border:1px solid rgba(255,255,255,.28);
+}
+.iconbtn:hover{background:var(--accent);border-color:var(--accent)}
+.iconbtn.listening{background:var(--accent);border-color:var(--accent)}
+.voicemsg{color:var(--accent-2);font-size:12px;margin:8px 0 0;min-height:0}
+.voicemsg:empty{display:none}
+
+/* ---------- Bascule vue carte/liste ---------- */
+.viewseg button{font-weight:600}
+
+/* ---------- Banniere traduction automatique ---------- */
+.autotrans{
+  margin:2px 0 0;padding:8px 11px;border-radius:var(--r-sm);
+  background:var(--part-soft);border:1px solid #e6cf8f;color:#7a5b00;
+  font-size:12px;line-height:1.45;
+}
+
+/* ---------- Vue liste (tableau) ---------- */
+.listview{flex:1;min-height:0;overflow:auto;background:var(--card)}
+.listview[hidden]{display:none}
+#map[hidden]{display:none}
+.htable{width:100%;border-collapse:collapse;font-size:13.5px}
+.htable caption{text-align:left}
+.htable thead th{
+  position:sticky;top:0;background:var(--ground);z-index:1;
+  border-bottom:2px solid var(--line);text-align:left;padding:0;
+}
+.thbtn{
+  width:100%;text-align:left;background:transparent;border:0;cursor:pointer;
+  font:700 11.5px var(--sans);text-transform:uppercase;letter-spacing:.04em;
+  color:var(--mut);padding:11px 12px;display:flex;align-items:center;
+}
+.thbtn:hover{color:var(--ink)}
+.sortar{color:var(--accent);font-weight:700}
+.htable tbody td{padding:9px 12px;border-bottom:1px solid var(--line-soft)}
+.htable tbody tr{cursor:pointer}
+.htable tbody tr:hover,.htable tbody tr:focus{background:var(--line-soft);outline:none}
+.htable tbody tr:focus-visible{outline:2px solid var(--link);outline-offset:-2px}
+.htable .num,.htable .mono{text-align:right;font-variant-numeric:tabular-nums}
+.htable .mono{font-family:var(--mono)}
+.cdot{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:6px;vertical-align:middle}
+.cdot.b-acc{background:var(--acc)}.cdot.b-part{background:var(--part)}.cdot.b-non{background:var(--non)}
+
+/* ---------- Badge services ---------- */
+.b-svc{background:#eae6f5;color:#4b3b7a}
+.b-svc::before{display:none}
+
+/* ---------- Accessibilite : texte masque visuellement ---------- */
+.visually-hidden{
+  position:absolute!important;width:1px;height:1px;overflow:hidden;
+  clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap;
+}
+
+/* responsive : liste prend la place de la carte */
+@media(max-width:760px){
+  #list{min-height:48%}
+  .headtools{margin-left:0;margin-top:8px}
+}
+
 /* ---------- Lien FAQ dans l'en-tete ---------- */
 .faqlink{
   margin-top:12px;border:1px solid rgba(232,118,90,.55);

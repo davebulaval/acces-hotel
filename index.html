@@ -24,30 +24,47 @@
         </span>
         <div class="wm">
           <span class="wm-name">Accès Hôtel</span>
-          <span class="wm-sub">L'accueil, vu de près</span>
+          <span class="wm-sub" data-i18n="tagline">L'accueil, vu de près</span>
+        </div>
+        <div class="headtools">
+          <select id="langSel" aria-label="Langue / Language"></select>
+          <button id="voiceBtn" class="iconbtn" type="button" aria-label="Commande vocale" title="Commande vocale">
+            <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path fill="currentColor" d="M12 14a3 3 0 0 0 3-3V6a3 3 0 0 0-6 0v5a3 3 0 0 0 3 3zm5-3a5 5 0 0 1-10 0H5a7 7 0 0 0 6 6.9V21h2v-3.1A7 7 0 0 0 19 11h-2z"/></svg>
+          </button>
         </div>
       </div>
-      <h1>Hôtels accessibles du Québec</h1>
-      <p class="tag">476 établissements audités sur place par <a href="https://www.keroul.qc.ca" target="_blank" rel="noopener">Kéroul</a>. La couleur du point indique la cote d'accessibilité.</p>
-      <button id="faqBtn" class="faqlink" type="button">FAQ et méthodologie</button>
+      <h1 data-i18n="title">Hôtels accessibles du Québec</h1>
+      <p class="tag" data-i18n="subtitle">476 établissements audités sur place par Kéroul. La couleur du point indique la cote d'accessibilité.</p>
+      <p id="voiceMsg" class="voicemsg" aria-live="polite"></p>
+      <button id="faqBtn" class="faqlink" type="button" data-i18n="faqBtn">FAQ et méthodologie</button>
     </header>
 
     <div class="filters">
-      <div class="seg" id="coteSeg" role="group" aria-label="Filtrer par cote (sélection multiple)">
-        <button data-c="all" class="on">Tous</button>
-        <button data-c="Accessible"><i class="dot" style="background:#1b7f4d"></i>Acc.</button>
-        <button data-c="Partiellement accessible"><i class="dot" style="background:#d39e00"></i>Part.</button>
-        <button data-c="Non accessible"><i class="dot" style="background:#c0392b"></i>Non</button>
+      <div class="seg viewseg" id="viewSeg" role="group" aria-label="Vue carte ou liste">
+        <button data-view="map" class="on" type="button" aria-pressed="true"><span class="lbl">Carte</span></button>
+        <button data-view="list" type="button" aria-pressed="false"><span class="lbl">Liste</span></button>
       </div>
-      <div class="field"><input type="search" id="q" placeholder="Rechercher un hôtel ou une ville"></div>
+      <p class="chips-label" data-i18n="coteLabel">Cote d'accessibilité (sélection multiple)</p>
+      <div class="seg" id="coteSeg" role="group" aria-label="Cote">
+        <button data-c="all" class="on" type="button" aria-pressed="true"><span class="lbl">Tous</span></button>
+        <button data-c="Accessible" type="button" aria-pressed="false"><i class="dot" style="background:#1b7f4d"></i><span class="lbl">Acc.</span></button>
+        <button data-c="Partiellement accessible" type="button" aria-pressed="false"><i class="dot" style="background:#d39e00"></i><span class="lbl">Part.</span></button>
+        <button data-c="Non accessible" type="button" aria-pressed="false"><i class="dot" style="background:#c0392b"></i><span class="lbl">Non</span></button>
+      </div>
+      <div class="field"><input type="search" id="q" data-i18n-ph="search" placeholder="Rechercher un hôtel ou une ville"></div>
       <div class="field"><select id="grpSel"><option value="all">Tous les groupes hôteliers</option></select></div>
-      <p class="chips-label">Gamme de prix (sélection multiple)</p>
-      <div class="chips" id="prChips" role="group" aria-label="Filtrer par gamme de prix (sélection multiple)"></div>
-      <div class="count"><span id="count"></span></div>
+      <p class="chips-label" data-i18n="needsLabel">Besoins d'accessibilité (sélection multiple)</p>
+      <div class="chips" id="needChips" role="group" aria-label="Besoins d'accessibilité"></div>
+      <p class="chips-label" data-i18n="servicesLabel">Services spécialisés (sélection multiple)</p>
+      <div class="chips" id="svcChips" role="group" aria-label="Services spécialisés"></div>
+      <p class="chips-label" data-i18n="priceLabel">Gamme de prix (sélection multiple)</p>
+      <div class="chips" id="prChips" role="group" aria-label="Gamme de prix"></div>
+      <p id="autotrans" class="autotrans" role="note" hidden></p>
+      <div class="count"><span id="count" role="status" aria-live="polite"></span></div>
     </div>
 
     <details class="info">
-      <summary>Comprendre les cotes et les critères</summary>
+      <summary data-i18n="infoSummary">Comprendre les cotes et les critères</summary>
       <div class="infobody">
         <p>Un évaluateur de Kéroul se déplace, mesure les lieux et attribue une cote.</p>
         <ul>
@@ -59,12 +76,13 @@
       </div>
     </details>
 
-    <div id="detail" class="detail"><p class="empty">Sélectionnez un point sur la carte pour consulter les critères d'accessibilité de l'établissement.</p></div>
+    <div id="detail" class="detail"><p class="empty" data-i18n="empty">Sélectionnez un hôtel sur la carte ou dans la liste pour voir ses critères d'accessibilité.</p></div>
 
     <footer class="legalnote">Données propriété de <a href="https://www.keroul.qc.ca" target="_blank" rel="noopener">Kéroul</a>. Accès Hôtel est une application non officielle et non commerciale qui sert à explorer les données de Kéroul.</footer>
   </aside>
 
   <div id="map"></div>
+  <div id="list" class="listview" hidden></div>
 </div>
 
 <div id="faq" class="modal" hidden>
@@ -110,6 +128,11 @@
 
 <script src="vendor/leaflet.js"></script>
 <script src="js/data.js"></script>
+<script src="js/i18n.js"></script>
+<script src="js/tr_en.js"></script>
+<script src="js/tr_es.js"></script>
+<script src="js/tr_de.js"></script>
+<script src="js/tr_zh.js"></script>
 <script src="js/app.js"></script>
 </body>
 </html>
