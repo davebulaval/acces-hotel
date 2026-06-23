@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Hotels accessibles du Quebec - carte Kéroul</title>
+<meta name="description" content="Carte interactive de l'accessibilite des hotels du Quebec, d'apres le repertoire certifie Kéroul. Cotes, criteres par chambre et commodite, groupes hoteliers.">
+<link rel="stylesheet" href="vendor/leaflet.css">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<div id="app">
+  <aside id="panel">
+    <header id="phead">
+      <div class="brand">
+        <span class="mark" aria-hidden="true">
+          <svg viewBox="0 0 40 40" width="40" height="40" focusable="false">
+            <circle cx="20" cy="20" r="19" class="mark-bg"></circle>
+            <circle cx="20" cy="13" r="3.6" class="mark-head"></circle>
+            <path d="M20 17.5c-3 0-5 1.9-5 4.6v3.2c0 .9.7 1.6 1.6 1.6h6.8c.9 0 1.6-.7 1.6-1.6v-3.2c0-2.7-2-4.6-5-4.6z" class="mark-body"></path>
+            <path d="M9 18.5c2.4-1.6 4.6-2.2 5.8-2.4" class="mark-arm"></path>
+            <path d="M31 18.5c-2.4-1.6-4.6-2.2-5.8-2.4" class="mark-arm"></path>
+          </svg>
+        </span>
+        <div class="wm">
+          <span class="wm-name">Québec Accessible</span>
+          <span class="wm-sub">L'accueil, vu de près</span>
+        </div>
+      </div>
+      <h1>Hôtels accessibles du Québec</h1>
+      <p class="tag">476 établissements audités sur place par <a href="https://www.keroul.qc.ca" target="_blank" rel="noopener">Kéroul</a>. La couleur du point indique la cote d'accessibilité.</p>
+      <button id="faqBtn" class="faqlink" type="button">FAQ et méthodologie</button>
+    </header>
+
+    <div class="filters">
+      <div class="seg" id="coteSeg" role="group" aria-label="Filtrer par cote (sélection multiple)">
+        <button data-c="all" class="on">Tous</button>
+        <button data-c="Accessible"><i class="dot" style="background:#1b7f4d"></i>Acc.</button>
+        <button data-c="Partiellement accessible"><i class="dot" style="background:#d39e00"></i>Part.</button>
+        <button data-c="Non accessible"><i class="dot" style="background:#c0392b"></i>Non</button>
+      </div>
+      <div class="field"><input type="search" id="q" placeholder="Rechercher un hôtel ou une ville"></div>
+      <div class="field"><select id="grpSel"><option value="all">Tous les groupes hôteliers</option></select></div>
+      <p class="chips-label">Gamme de prix (sélection multiple)</p>
+      <div class="chips" id="prChips" role="group" aria-label="Filtrer par gamme de prix (sélection multiple)"></div>
+      <div class="count"><span id="count"></span></div>
+    </div>
+
+    <details class="info">
+      <summary>Comprendre les cotes et les critères</summary>
+      <div class="infobody">
+        <p>Un évaluateur de Kéroul se déplace, mesure les lieux et attribue une cote.</p>
+        <ul>
+          <li><b style="color:#1b7f4d">Accessible</b> : tout le parcours passe, de l'entrée à la salle de bain.</li>
+          <li><b style="color:#d39e00">Partiellement accessible</b> : des chambres adaptées, mais avec des manquements mesurés.</li>
+          <li><b style="color:#c0392b">Non accessible</b> : aucune chambre conforme, ou des obstacles qui bloquent.</li>
+        </ul>
+        <p>Le détail est rangé en deux blocs : la Chambre et les Commodités.</p>
+      </div>
+    </details>
+
+    <div id="detail" class="detail"><p class="empty">Sélectionnez un point sur la carte pour consulter les critères d'accessibilité de l'établissement.</p></div>
+
+    <footer class="legalnote">Données propriété de <a href="https://www.keroul.qc.ca" target="_blank" rel="noopener">Kéroul</a>. Québec Accessible est une application non officielle et non commerciale qui sert à explorer les données de Kéroul.</footer>
+  </aside>
+
+  <div id="map"></div>
+</div>
+
+<div id="faq" class="modal" hidden>
+  <div class="modal-bg" data-close></div>
+  <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="faqTitle">
+    <button class="modal-x" data-close type="button" aria-label="Fermer">&times;</button>
+    <h2 id="faqTitle">FAQ et méthodologie</h2>
+
+    <details open><summary>D'où viennent les données ?</summary>
+      <p>De Kéroul, l'organisme québécois de certification reconnu par le ministère du Tourisme. Un évaluateur passe sur place, mesure et photographie ; la cote tient 5 ans. On reprend ici 476 hôtels de leur répertoire.</p></details>
+
+    <details><summary>Que veulent dire les trois cotes ?</summary>
+      <p>Elles notent tout le parcours d'un client : stationnement, entrée, circulation, chambre, salle de bain.</p>
+      <ul>
+        <li><b style="color:#1b7f4d">Accessible</b> : tout passe.</li>
+        <li><b style="color:#d39e00">Partiellement accessible</b> : des chambres adaptées, mais avec des manques mesurés (porte trop étroite, barre d'appui sous la norme, espace de transfert trop juste).</li>
+        <li><b style="color:#c0392b">Non accessible</b> : aucune chambre conforme, ou des obstacles qui bloquent (marches, seuils, toilette non adaptée).</li>
+      </ul></details>
+
+    <details><summary>Et le détail par critère ?</summary>
+      <p>Il vient des fiches de Kéroul, rangé en Chambre (l'unité, la salle de bain) et Commodités (stationnement, entrée, ascenseur, toilette universelle, restaurant, piscine). La pastille verte, rouge ou grise reprend ce que dit Kéroul : favorable, défavorable, ou à nuancer. 360 des 476 fiches donnent ce détail ; les autres non.</p></details>
+
+    <details><summary>Comment vous fixez la gamme de prix ?</summary>
+      <p><b>C'est un repère de positionnement, pas un tarif.</b> On n'avait aucun prix en dollars fiable. La gamme vient des étoiles CITQ, de la bannière (Fairmont = $$$$, Super 8 = $), du positionnement sur Booking ou Expedia, ou du site de l'hôtel.</p>
+      <p>La fiabilité varie : quelques cas reposent sur une vraie donnée, la plupart sur les étoiles ou la bannière, et les petits indépendants sur une simple estimation. À lire comme indicatif.</p></details>
+
+    <details><summary>D'où vient le nombre de chambres ?</summary>
+      <p>Des sites des hôtels, de Booking, de la classification CITQ et de Wikipédia. Trouvé pour 467 des 476 ; il manque surtout pour de très petits établissements ou des complexes éclatés.</p></details>
+
+    <details><summary>Comment les hôtels sont placés et regroupés ?</summary>
+      <p>Les coordonnées viennent des fiches Kéroul. Le groupe hôtelier se déduit de la marque dans le nom, et des portefeuilles officiels quand la marque n'apparaît pas (ex. Jaro). Environ 70 % des hôtels sont indépendants ou sans bannière.</p></details>
+
+    <details><summary>À garder en tête</summary>
+      <ul>
+        <li>Kéroul ne couvre pas tous les hôtels du Québec.</li>
+        <li>La gamme de prix est un repère, pas un tarif.</li>
+        <li>Avant de réserver, confirmez toujours l'accessibilité avec l'hôtel.</li>
+      </ul></details>
+
+    <p class="faqcred"><b>Les données sont la propriété de Kéroul.</b> Québec Accessible est une application non officielle et sans lien avec Kéroul ; elle sert seulement à explorer plus facilement leurs données, sans aucun usage commercial. Fond de carte : CARTO. Cartographie : Leaflet.</p>
+  </div>
+</div>
+
+<script src="vendor/leaflet.js"></script>
+<script src="js/data.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>

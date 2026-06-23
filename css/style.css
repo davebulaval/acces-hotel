@@ -1,0 +1,387 @@
+/* Carte d'accessibilite des hotels du Quebec - donnees Kéroul.
+   Design : panneau "fiche de signaletique" sobre, carte en heros,
+   les trois cotes d'accessibilite comme seule couleur saturee. */
+
+:root{
+  /* Ground et encre */
+  --ground:#f5f7f9;
+  --card:#ffffff;
+  --ink:#18222c;
+  --mut:#5d6b78;
+  --line:#e3e7ec;
+  --line-soft:#eef1f4;
+
+  /* En-tete ardoise (cadre de la carte) */
+  --slate:#1c2c3a;
+  --slate-2:#24384a;
+  --slate-mut:#9fb0bf;
+
+  /* Triade des cotes (identiques aux donnees et a la legende JS) */
+  --acc:#1b7f4d;
+  --part:#d39e00;
+  --non:#c0392b;
+  --acc-soft:#e6f1ea;
+  --part-soft:#f9f0d8;
+  --non-soft:#fae7e6;
+
+  /* Lien / action */
+  --link:#1f5fa8;
+  --link-dk:#184a83;
+
+  /* Accent chaleureux Québec Accessible (hospitalite) : corail chaud, distinct de la triade
+     des cotes et des couleurs institutionnelles de Kéroul. Reserve a l'identite. */
+  --accent:#e8765a;
+  --accent-2:#f4a98f;
+
+  --r:10px;
+  --r-sm:8px;
+  --shadow:0 1px 2px rgba(24,34,44,.05), 0 6px 18px rgba(24,34,44,.06);
+
+  --sans:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  --mono:ui-monospace,"SF Mono",Menlo,Consolas,"Liberation Mono",monospace;
+}
+
+*{box-sizing:border-box}
+html,body{margin:0;height:100%}
+body{
+  font:15px/1.5 var(--sans);
+  color:var(--ink);
+  background:var(--ground);
+  -webkit-font-smoothing:antialiased;
+  text-rendering:optimizeLegibility;
+}
+
+#app{display:flex;height:100%}
+
+/* ---------- Panneau lateral ---------- */
+#panel{
+  width:404px;max-width:42vw;min-width:336px;
+  display:flex;flex-direction:column;
+  background:var(--card);
+  border-right:1px solid var(--line);
+  overflow:hidden;
+  z-index:500;
+}
+#map{flex:1;min-height:0;background:#d6e6f0}
+
+/* ---------- En-tete ---------- */
+#phead{
+  padding:20px 22px 18px;
+  background:
+    radial-gradient(120% 140% at 100% 0%, var(--slate-2) 0%, var(--slate) 60%);
+  color:#fff;
+  position:relative;
+}
+#phead::after{
+  content:"";position:absolute;left:0;right:0;bottom:0;height:3px;
+  background:linear-gradient(90deg,
+    var(--acc) 0 33.33%,
+    var(--part) 33.33% 66.66%,
+    var(--non) 66.66% 100%);
+}
+/* Wordmark Québec Accessible : petite identite propre, sobre, posee au-dessus du titre */
+.brand{display:flex;align-items:center;gap:11px;margin:0 0 14px}
+.mark{
+  flex:0 0 auto;width:40px;height:40px;display:block;
+  filter:drop-shadow(0 2px 5px rgba(232,118,90,.35));
+}
+.mark svg{display:block}
+.mark-bg{fill:var(--accent)}
+.mark-head{fill:#fff}
+.mark-body{fill:#fff}
+.mark-arm{
+  fill:none;stroke:#fff;stroke-width:2.1;stroke-linecap:round;
+  opacity:.92;
+}
+.wm{display:flex;flex-direction:column;line-height:1}
+.wm-name{
+  font-size:19px;font-weight:800;letter-spacing:-.02em;color:#fff;
+}
+.wm-sub{
+  margin-top:3px;font-size:11px;font-weight:600;letter-spacing:.02em;
+  color:var(--accent-2);
+}
+h1{
+  font-size:21px;line-height:1.2;margin:0 0 6px;
+  font-weight:700;letter-spacing:-.01em;
+}
+.tag{color:var(--slate-mut);font-size:12.5px;line-height:1.45;margin:0}
+.tag a{color:#fff;text-decoration:none;border-bottom:1px solid rgba(255,255,255,.4)}
+.tag a:hover{border-bottom-color:#fff}
+
+/* ---------- Barre de filtres ---------- */
+.filters{
+  padding:16px 22px 18px;
+  border-bottom:1px solid var(--line);
+  display:flex;flex-direction:column;gap:11px;
+}
+
+/* Segmented control des cotes */
+.seg{
+  display:flex;
+  background:var(--line-soft);
+  border:1px solid var(--line);
+  border-radius:var(--r);
+  padding:3px;
+  gap:3px;
+}
+.seg button{
+  flex:1;border:0;background:transparent;
+  padding:7px 6px;font:600 12.5px/1 var(--sans);
+  cursor:pointer;color:var(--mut);
+  border-radius:7px;
+  display:flex;align-items:center;justify-content:center;gap:5px;
+  transition:background .12s ease, color .12s ease, box-shadow .12s ease;
+}
+.seg button:hover{color:var(--ink)}
+.seg button.on{
+  background:var(--card);color:var(--ink);
+  box-shadow:0 1px 2px rgba(24,34,44,.12);
+}
+.dot{display:inline-block;width:9px;height:9px;border-radius:50%;flex:0 0 auto}
+
+/* Champs */
+.field{position:relative}
+input[type=search],select{
+  width:100%;padding:9px 11px;
+  border:1px solid var(--line);border-radius:var(--r-sm);
+  background:var(--card);font:14px var(--sans);color:var(--ink);
+  transition:border-color .12s ease, box-shadow .12s ease;
+}
+input[type=search]::placeholder{color:#94a2af}
+select{
+  appearance:none;cursor:pointer;padding-right:34px;
+  background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'><path fill='%235d6b78' d='M1 1l5 5 5-5'/></svg>");
+  background-repeat:no-repeat;background-position:right 12px center;
+}
+input[type=search]:hover,select:hover{border-color:#c6cdd5}
+input[type=search]:focus,select:focus{
+  outline:none;border-color:var(--acc);
+  box-shadow:0 0 0 3px rgba(27,127,77,.16);
+}
+
+.count{
+  font:600 12px var(--sans);color:var(--mut);
+  letter-spacing:.01em;
+  padding-top:1px;
+}
+
+/* Puces de prix (multi-selection) */
+.chips-label{
+  font:600 11px var(--sans);text-transform:uppercase;letter-spacing:.05em;
+  color:var(--mut);margin:2px 0 -2px;
+}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip{
+  border:1px solid var(--line);background:var(--card);
+  color:var(--mut);font:600 12px var(--mono);letter-spacing:.5px;
+  padding:5px 10px;border-radius:30px;cursor:pointer;
+  transition:background .12s ease, color .12s ease, border-color .12s ease;
+}
+.chip:hover{border-color:#c6cdd5;color:var(--ink)}
+.chip.on{background:var(--ink);color:#fff;border-color:var(--ink)}
+
+/* Mention legale persistante */
+.legalnote{
+  flex:0 0 auto;padding:10px 22px;border-top:1px solid var(--line);
+  font-size:11px;line-height:1.45;color:var(--mut);background:var(--ground);
+}
+.legalnote a{color:var(--link);text-decoration:none}
+.legalnote a:hover{text-decoration:underline}
+
+/* ---------- Bloc explicatif ---------- */
+.info{margin:0;border-bottom:1px solid var(--line)}
+.info summary{
+  cursor:pointer;padding:13px 22px;
+  font:600 13px var(--sans);color:var(--ink);
+  list-style:none;display:flex;align-items:center;gap:8px;
+}
+.info summary::-webkit-details-marker{display:none}
+.info summary::before{
+  content:"";flex:0 0 auto;width:7px;height:7px;
+  border-right:2px solid var(--mut);border-bottom:2px solid var(--mut);
+  transform:rotate(-45deg);transition:transform .15s ease;
+  margin-top:-2px;
+}
+.info[open] summary::before{transform:rotate(45deg);margin-top:0}
+.info summary:hover{color:var(--acc)}
+.infobody{font-size:12.8px;line-height:1.55;color:#3a4651;padding:0 22px 14px}
+.infobody p{margin:0 0 8px}
+.infobody ul{padding-left:0;margin:8px 0;list-style:none}
+.infobody li{
+  margin:6px 0;padding-left:14px;position:relative;color:#3a4651;
+}
+.infobody li::before{
+  content:"";position:absolute;left:0;top:7px;
+  width:6px;height:6px;border-radius:50%;background:var(--line);
+}
+.rfnote{background:var(--part-soft);border-left:3px solid var(--part);padding:8px 10px;border-radius:6px;margin-top:8px}
+
+/* ---------- Panneau de detail ---------- */
+.detail{flex:1;overflow-y:auto;padding:20px 22px 48px}
+.detail .empty{
+  color:var(--mut);font-size:13.5px;text-align:center;
+  line-height:1.6;margin:48px auto 0;max-width:240px;
+}
+.detail .empty::before{
+  content:"";display:block;width:34px;height:34px;margin:0 auto 14px;
+  border-radius:50%;border:2px solid var(--accent-2);
+  background:
+    radial-gradient(circle at center, var(--accent) 0 4px, transparent 4px);
+}
+
+.dh{
+  font-size:18px;line-height:1.25;margin:0 0 10px;
+  font-weight:700;letter-spacing:-.01em;
+}
+
+/* Badges */
+.badges{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 12px}
+.badge{
+  font:600 11.5px/1.4 var(--sans);
+  padding:4px 10px;border-radius:30px;
+  display:inline-flex;align-items:center;gap:5px;
+}
+.badge::before{content:"";width:7px;height:7px;border-radius:50%;flex:0 0 auto}
+.b-acc{background:var(--acc-soft);color:#155f3a}
+.b-acc::before{background:var(--acc)}
+.b-part{background:var(--part-soft);color:#866100}
+.b-part::before{background:var(--part)}
+.b-non{background:var(--non-soft);color:#9a2c20}
+.b-non::before{background:var(--non)}
+.b-grp{background:#eef1f4;color:#46535f}
+.b-grp::before{display:none}
+.b-price{
+  background:#eef1f4;color:#46535f;
+  font-family:var(--mono);font-size:11px;letter-spacing:.5px;
+}
+.b-price::before{display:none}
+
+.meta{color:var(--mut);font-size:12.8px;line-height:1.5;margin:0 0 4px}
+.meta a{color:var(--link);text-decoration:none}
+.meta a:hover{text-decoration:underline}
+
+/* Bouton fiche Kéroul */
+.ficheBtn{
+  display:inline-flex;align-items:center;gap:7px;
+  margin:14px 0 6px;padding:11px 16px;
+  background:var(--link);color:#fff;
+  font:600 13px var(--sans);
+  border-radius:var(--r-sm);text-decoration:none;
+  box-shadow:0 1px 2px rgba(31,95,168,.3);
+  transition:background .12s ease, box-shadow .12s ease, transform .06s ease;
+}
+.ficheBtn:hover{background:var(--link-dk);box-shadow:0 2px 8px rgba(31,95,168,.35)}
+.ficheBtn:active{transform:translateY(1px)}
+
+.rf{background:var(--non-soft);border-left:3px solid var(--non);padding:9px 11px;border-radius:7px;font-size:12.6px;line-height:1.5;margin:12px 0;color:#7a1f1f}
+.yr{background:#eaf1f9;border-left:3px solid var(--link);padding:8px 11px;border-radius:7px;font-size:12.6px;line-height:1.5;margin:12px 0;color:#234}
+
+/* Groupes de criteres */
+.grpsec{margin-top:20px}
+.grpsec h3{
+  font:700 11px var(--sans);text-transform:uppercase;letter-spacing:.07em;
+  color:var(--mut);margin:0 0 10px;
+  padding-bottom:7px;border-bottom:1px solid var(--line);
+}
+.sect{
+  margin:0 0 12px;padding:11px 13px;
+  background:var(--ground);border:1px solid var(--line-soft);
+  border-radius:var(--r-sm);
+}
+.sect .st{font:600 13px var(--sans);margin:0 0 7px;color:var(--ink)}
+.crit{margin:0;padding:0;list-style:none}
+.crit li{display:flex;gap:9px;padding:3px 0;font-size:12.7px;line-height:1.45;align-items:flex-start}
+.cd{flex:0 0 auto;width:9px;height:9px;border-radius:50%;margin-top:4px;box-shadow:0 0 0 3px var(--card)}
+.cd.pos{background:var(--acc)}
+.cd.neg{background:var(--non)}
+.cd.neutre{background:#b5bfc8}
+.crit .cl{color:#3a4651}
+.crit .cl b{color:var(--ink);font-weight:600}
+.nodet{color:var(--mut);font-size:12.8px;font-style:italic;margin-top:14px;line-height:1.5}
+
+/* ---------- Carte : legende et popups ---------- */
+.legend{
+  background:var(--card);padding:10px 13px;border-radius:var(--r-sm);
+  box-shadow:var(--shadow);font-size:12.5px;line-height:1.95;color:var(--ink);
+  border:1px solid var(--line);
+}
+.legend .dot{margin-right:7px;vertical-align:middle}
+.leaflet-popup-content{font-size:13px;margin:10px 12px}
+.leaflet-popup-content b{font-size:13.5px}
+
+.leaflet-control-zoom a{color:var(--ink)!important}
+.leaflet-bar a{border-bottom-color:var(--line)!important}
+
+/* ---------- Focus visible (app sur l'accessibilite) ---------- */
+:focus-visible{outline:2px solid var(--link);outline-offset:2px}
+.seg button:focus-visible{outline-offset:-1px}
+.ficheBtn:focus-visible,.tag a:focus-visible{outline-color:#fff;outline-offset:3px}
+
+/* ---------- Responsive : carte en haut, panneau en bas ---------- */
+@media(max-width:760px){
+  #app{flex-direction:column}
+  #panel{
+    width:100%;max-width:none;min-width:0;height:auto;max-height:52%;
+    order:2;border-right:0;border-top:1px solid var(--line);
+  }
+  #map{order:1;min-height:48%}
+  #phead{padding:16px 18px 14px}
+  h1{font-size:18px}
+  .filters,.info summary,.infobody,.detail{padding-left:18px;padding-right:18px}
+}
+
+@media(prefers-reduced-motion:reduce){
+  *{transition:none!important}
+}
+
+/* ---------- Lien FAQ dans l'en-tete ---------- */
+.faqlink{
+  margin-top:12px;border:1px solid rgba(232,118,90,.55);
+  background:rgba(232,118,90,.16);color:#fff;
+  font:600 12px var(--sans);cursor:pointer;
+  padding:6px 13px;border-radius:30px;
+  display:inline-flex;align-items:center;gap:7px;
+  transition:background .12s ease, border-color .12s ease;
+}
+.faqlink::before{
+  content:"";width:7px;height:7px;border-radius:50%;
+  background:var(--accent);flex:0 0 auto;
+  box-shadow:0 0 0 3px rgba(232,118,90,.25);
+}
+.faqlink:hover{background:rgba(232,118,90,.28);border-color:rgba(244,169,143,.8)}
+
+/* ---------- Modale FAQ ---------- */
+.modal[hidden]{display:none}
+.modal{position:fixed;inset:0;z-index:1200;display:flex;align-items:center;justify-content:center;padding:24px}
+.modal-bg{position:absolute;inset:0;background:rgba(18,34,44,.5);backdrop-filter:blur(2px)}
+.modal-card{
+  position:relative;background:var(--card);color:var(--ink);
+  width:min(620px,100%);max-height:86vh;overflow-y:auto;
+  border-radius:var(--r);box-shadow:0 12px 40px rgba(18,34,44,.3);
+  padding:26px 28px 30px;
+}
+.modal-card h2{font-size:20px;margin:0 0 16px;letter-spacing:-.01em}
+.modal-x{
+  position:absolute;top:16px;right:18px;border:0;background:transparent;
+  font-size:26px;line-height:1;color:var(--mut);cursor:pointer;padding:2px 6px;border-radius:6px;
+}
+.modal-x:hover{color:var(--ink);background:var(--line-soft)}
+.modal-card details{border-bottom:1px solid var(--line-soft);padding:2px 0}
+.modal-card summary{
+  cursor:pointer;list-style:none;padding:12px 0;
+  font:600 14px var(--sans);color:var(--ink);
+  display:flex;align-items:center;gap:9px;
+}
+.modal-card summary::-webkit-details-marker{display:none}
+.modal-card summary::before{
+  content:"";flex:0 0 auto;width:7px;height:7px;
+  border-right:2px solid var(--mut);border-bottom:2px solid var(--mut);
+  transform:rotate(-45deg);transition:transform .15s ease;margin-top:-2px;
+}
+.modal-card details[open] summary::before{transform:rotate(45deg);margin-top:0}
+.modal-card summary:hover{color:var(--link)}
+.modal-card details p{margin:0 0 10px;font-size:13.2px;line-height:1.6;color:#3a4651}
+.modal-card details ul{margin:6px 0 12px;padding-left:18px}
+.modal-card details li{font-size:13.2px;line-height:1.55;color:#3a4651;margin:5px 0}
+.faqcred{margin:18px 0 0;font-size:12px;line-height:1.6;color:var(--mut)}
