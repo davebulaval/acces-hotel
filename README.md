@@ -65,3 +65,9 @@ Tier gratuit « Hobby » (usage personnel). `vercel` à la racine, ou importer l
 ## Crédits
 
 Données d'accessibilité : Kéroul. Fond cartographique : CARTO (tuiles Voyager, sur données OpenStreetMap). Cartographie : Leaflet.
+
+## Licence
+
+Le **code** de ce projet (index.html, css/, js/app.js, test/, scripts) est sous licence [MIT](LICENSE).
+
+Les **données** (`js/data.js`) ne sont **pas** couvertes par la licence MIT : elles sont la propriété de [Kéroul](https://www.keroul.qc.ca), incluses uniquement pour permettre à cette application non officielle de les afficher. Aucune utilisation commerciale. Leaflet (`vendor/`) est sous licence BSD-2-Clause.
